@@ -1,38 +1,35 @@
-const cards = document.querySelectorAll(".swap-card");
 const result = document.getElementById("swapResult");
 
-cards.forEach(card => {
+if (!result) {
+  console.error("Result element not found");
+} else {
+  const animationConfig = {
+    duration: 500,
+    fill: 'forwards'
+  };
 
-card.addEventListener("click", () => {
+  const animateResult = (element) => {
+    element.animate(
+      [
+        { opacity: 0, transform: 'scale(.8)' },
+        { opacity: 1, transform: 'scale(1)' }
+      ],
+      animationConfig
+    );
+  };
 
-const oldFood = card.dataset.old;
-const newFood = card.dataset.new;
-const protein = card.dataset.protein;
-const calories = card.dataset.calories;
-
-result.innerHTML = `
-
-<h3>${oldFood} ➜ ${newFood}</h3>
-
-<br>
-
-<p>${protein}</p>
-
-<p>${calories}</p>
-
-`;
-
-result.animate(
-[
-{opacity:0, transform:'scale(.8)'},
-{opacity:1, transform:'scale(1)'}
-],
-{
-duration:500,
-fill:'forwards'
+  document.querySelectorAll(".swap-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const { old: oldFood, new: newFood, protein, calories } = card.dataset;
+      
+      result.innerHTML = `
+        <h3>${oldFood} ➜ ${newFood}</h3>
+        <br>
+        <p>${protein}</p>
+        <p>${calories}</p>
+      `;
+      
+      animateResult(result);
+    });
+  });
 }
-);
-
-});
-
-});
